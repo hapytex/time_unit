@@ -2,7 +2,11 @@ from datetime import date, datetime, timedelta
 
 
 def date_from_int(val):
-    return date(val // 10000, (val // 100) % 100, val % 100)
+    d = val % 100
+    val //= 100
+    m = val % 100
+    val //= 100
+    return date(val, m, d)
 
 
 class TimeunitKindMeta(type):
@@ -52,7 +56,7 @@ class TimeunitKindMeta(type):
         return datetime.strptime(cls.to_str(dt), cls.formatter).date()
 
 
-class TimeunitKind(metaclass=PeriodKindMeta):
+class TimeunitKind(metaclass=TimeunitKindMeta):
     kind_int = None
     formatter = None
 
