@@ -10,6 +10,7 @@ def date_from_int(val, div=1):
     val //= 100
     return date(val, m, d)
 
+
 def date_to_int(val, mul=1):
     return mul * (val.year * 10000 + val.month * 100 + val.day)
 
@@ -32,7 +33,11 @@ class TimeunitKindMeta(type):
     def unit_register(self):
         result = TimeunitKindMeta._registered
         if result is None:
-            result = {k.kind_int: k for k in TimeunitKindMeta._pre_registered if k.kind_int is not None}
+            result = {
+                k.kind_int: k
+                for k in TimeunitKindMeta._pre_registered
+                if k.kind_int is not None
+            }
             TimeunitKindMeta._registered = result
         return result
 
@@ -103,6 +108,7 @@ class Decade(TimeunitKind):
     @classmethod
     def _next(cls, dt):
         return date(dt.year + 10, 1, 1)
+
 
 class Year(TimeunitKind):
     kind_int = 1
