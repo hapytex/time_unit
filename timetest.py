@@ -63,6 +63,8 @@ class TimeUnitTest(unittest.TestCase):
                     stu = superkind(dt)
                     tu = kind(dt)
                     self.assertLess(len(tu), len(stu))
+                    self.assertLess(int(stu.previous), int(tu))
+                    self.assertLess(int(tu), int(stu.next))
                     self.assertNotEqual(stu, tu)
                     self.assertNotEqual(int(stu), int(tu))
                     self.assertTrue(stu.overlaps_with(tu))
