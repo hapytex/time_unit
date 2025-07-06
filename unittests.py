@@ -20,9 +20,15 @@ class TimeUnitTest(unittest.TestCase):
             yield START_DATE + timedelta(days=1)
 
     def test_to_int(self):
+        prev_set = set()
+        cur_set = set()
         for kind in TIME_UNITS:
+            prev_set.update(cur_set)
+            cur_set = set()
             for dt in self.date_range_yield():
                 tu = kind(dt)
+                cur_set.add(int(tu))
+                self.assertNotIn(int(tu), prev_set)
                 tu2 = kind(tu.first_date)
                 self.assertEqual(int(tu), int(tu2))
                 self.assertLess(tu.previous, tu)
@@ -32,6 +38,7 @@ class TimeUnitTest(unittest.TestCase):
                 self.assertEqual(TimeunitKind.from_int(int(tu)), tu)
                 self.assertIn(dt, tu)
                 self.assertIn(dt, list(tu))
+                self.assertEqual(len(tu), len(list(tu)))
                 self.assertIn(tu, tu)
                 self.assertNotIn(dt, tu.next)
                 self.assertNotIn(dt, tu.previous)
