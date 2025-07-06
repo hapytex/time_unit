@@ -125,7 +125,7 @@ class Quarter(TimeunitKind):
     @classmethod
     def _next(cls, dt):
         q2 = 3 * (dt.month + 2) // 3 + 1
-        if q2 == 5:
+        if q2 == 13:
             return date(dt.year + 1, 1, 1)
         return date(dt.year, q2, 1)
 
