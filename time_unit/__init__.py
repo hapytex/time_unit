@@ -69,7 +69,7 @@ class TimeunitKindMeta(type):
 
     def from_int(cls, val):
         mul = cls.multiplier
-        return TimeunitKindMeta._registered[val % mul](date_from_int(val, mul))
+        return TimeunitKind.unit_register[val % mul](date_from_int(val, mul))
 
     def get_previous(cls, dt):
         if isinstance(dt, Timeunit):
