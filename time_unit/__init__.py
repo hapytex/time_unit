@@ -262,7 +262,7 @@ class Timeunit:
     def __contains__(self, item):
         frm0, to0 = self._get_range(item)
         frm, to = self.date_range
-        return frm <= frm and to0 <= to
+        return frm <= frm0 and to0 <= to
 
     def __str__(self):
         return self.kind.to_str(self.dt)
