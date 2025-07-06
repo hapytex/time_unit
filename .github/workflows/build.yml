@@ -2,14 +2,15 @@ name: CI/CD
 on: push
 
 jobs:
-  name: run tests
-  steps:
-  - uses: actions/checkout@v4
-  - name: Set up Python
-    uses: actions/setup-python@v5
-    with:
-      python-version: '3.x'
-  - name: Install dependencies
-    run: python -m pip install unittest
-  - name: Run test
-    run: python -m unittests.TimeUnitTest
+  test:
+    name: run tests
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: python -m pip install unittest
+    - name: Run test
+      run: python -m unittests.TimeUnitTest
