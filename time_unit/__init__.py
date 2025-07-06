@@ -50,6 +50,15 @@ class TimeunitKindMeta(type):
             TimeunitKindMeta._multiplier = result
         return result
 
+    def __int__(self):
+        return self.kind_int
+
+    def __index__(self):
+        return int(self)
+
+    def __hash__(self):
+        return hash(int(self))
+
     def __call__(cls, dt):
         if isinstance(dt, Timeunit):
             dt = dt.dt
@@ -67,9 +76,6 @@ class TimeunitKindMeta(type):
             dt = dt.dt
         dt -= timedelta(days=1)
         return cls(dt)
-
-    def first_day(cls, dt):
-        return cls.truncate(dt)
 
     def last_day(cls, dt):
         return cls._next(dt) - timedelta(days=1)
@@ -95,20 +101,6 @@ class TimeunitKindMeta(type):
 class TimeunitKind(metaclass=TimeunitKindMeta):
     kind_int = None
     formatter = None
-
-
-class Decade(TimeunitKind):
-    kind_int = 0
-    formatter = "%Ys"
-
-    @classmethod
-    def truncate(cls, dt):
-        return date(dt.year - dt.year % 10, 1, 1)
-
-    @classmethod
-    def _next(cls, dt):
-        return date(dt.year + 10, 1, 1)
-
 
 class Year(TimeunitKind):
     kind_int = 1
@@ -187,8 +179,16 @@ class Timeunit:
         return self.kind.get_previous(self.dt)
 
     @property
-    def last_day(self):
+    def first_date(self):
+        return self.dt
+
+    @property
+    def last_date(self):
         return self.kind.last_day(self.dt)
+
+    @property
+    def date_range(self):
+        return self.dt, self.last_date
 
     @property
     def ancestors(self):
@@ -219,6 +219,9 @@ class Timeunit:
     def next(self):
         return self.kind.get_next(self.dt)
 
+    def __index__(self):
+        return int(self)
+
     def __eq__(self, other):
         return self.kind == other.kind and self.dt == other.dt
 
@@ -237,8 +240,29 @@ class Timeunit:
     def __int__(self):
         return date_to_int(self.dt, self.kind.multiplier) + self.kind.kind_int
 
+    def __hash__(self):
+        return hash(int(self))
+
     def __repr__(self):
         return f"{self.__class__.__name}({self.kind.__qualname__}, {self.dt!r})"
+
+    @classmethod
+    def _get_range(cls, item):
+        if isinstance(item, date):
+            return item, item
+        elif isinstance(item, Timeunit):
+            return item.date_range
+        raise TypeError('Item {item!r} has no date range.')
+
+    def overlaps_with(self, item):
+        frm0, to0 = self._get_range(item)
+        frm, to = self.date_range
+        return to >= frm0 and to0 >= frm
+
+    def __contains__(self, item):
+        frm0, to0 = self._get_range(item)
+        frm, to = self.date_range
+        return frm <= frm and to0 <= to
 
     def __str__(self):
         return self.kind.to_str(self.dt)
