@@ -57,6 +57,11 @@ class TimeUnitTest(unittest.TestCase):
                 self.assertEqual((tu.first_date - tu.previous.last_date), timedelta(days=1))
 
     def test_hierarchy(self):
+        """
+        Test hierarchical relationships between larger and smaller time unit classes.
+        
+        Verifies that for each pair of time unit classes where one is a superkind of the other, the smaller unit contains fewer elements, their integer representations are ordered correctly, they are not equal, and they overlap with each other.
+        """
         for i, superkind in enumerate(TIME_UNITS, 1):
             for kind in TIME_UNITS[i:]:
                 for dt in self.date_range_yield():
