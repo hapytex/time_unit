@@ -25,10 +25,16 @@ class TimeUnitTest(unittest.TestCase):
                 tu = kind(dt)
                 tu2 = kind(tu.first_date)
                 self.assertEqual(int(tu), int(tu2))
-                self.assertNotEqual(int(tu), int(tu.previous))
-                self.assertNotEqual(int(tu), int(tu.next))
+                self.assertLess(tu.previous, tu)
+                self.assertLess(tu, tu.next)
+                self.assertLess(int(tu), int(tu.next))
+                self.assertLess(int(tu.previous), int(tu))
                 self.assertEqual(TimeunitKind.from_int(int(tu)), tu)
+                self.assertIn(dt, tu)
+                self.assertIn(dt, list(tu))
                 self.assertIn(tu, tu)
+                self.assertNotIn(dt, tu.next)
+                self.assertNotIn(dt, tu.previous)
                 self.assertNotIn(tu, tu.next)
                 self.assertNotIn(tu, tu.previous)
                 self.assertNotIn(tu.previous, tu)
@@ -47,7 +53,13 @@ class TimeUnitTest(unittest.TestCase):
         for i, superkind in enumerate(TIME_UNITS, 1):
             for kind in TIME_UNITS[i:]:
                 for dt in self.date_range_yield():
-                    self.assertTrue(superkind(dt).overlaps_with(kind(dt)))
+                    stu = superkind(dt)
+                    tu = kind(dt)
+                    self.assertLess(len(tu), len(stu))
+                    self.assertNotEqual(stu, tu)
+                    self.assertNotEqual(int(stu), int(tu))
+                    self.assertTrue(stu.overlaps_with(tu))
+                    self.assertTrue(tu.overlaps_with(stu))
 
 if __name__ == '__main__':
     unittest.main()
