@@ -12,4 +12,4 @@ jobs:
       with:
         python-version: '3.x'
     - name: Run test
-      run: python -m unittests.TimeUnitTest
+      run: python timetest.py
