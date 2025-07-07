@@ -244,7 +244,7 @@ class Timeunit:
         return hash(int(self))
 
     def __repr__(self):
-        return f"{self.__class__.__name}({self.kind.__qualname__}, {self.dt!r})"
+        return f"{self.__class__.__name__}({self.kind.__qualname__}, {self.dt!r})"
 
     @classmethod
     def _get_range(cls, item):
