@@ -1,7 +1,7 @@
 import unittest
 from datetime import date, timedelta
 
-from time_unit import Year, Quarter, Month, Week, Day, TimeunitKind
+from time_unit import Year, Quarter, Month, Week, Day, TimeunitKind, Timeunit
 
 TIME_UNITS = [
     Year,
@@ -21,15 +21,22 @@ class TimeUnitTest(unittest.TestCase):
 
     def test_to_int(self):
         prev_set = set()
+        prev_name = set()
         cur_set = set()
+        cur_name = set()
         for kind in TIME_UNITS:
+            prev_name.update(cur_name)
             prev_set.update(cur_set)
             cur_set = set()
+            cur_name = set()
             for dt in self.date_range_yield():
                 tu = kind(dt)
                 cur_set.add(int(tu))
+                cur_set.add(str(tu))
                 self.assertNotIn(int(tu), prev_set)
+                self.assertNotIn(str(tu), prev_name)
                 tu2 = kind(tu.first_date)
+                self.assertEqual(Timeunit(int(tu.kind), tu.dt), tu)
                 self.assertEqual(int(tu), int(tu2))
                 self.assertEqual(kind(tu), tu)
                 self.assertEqual(tu == tu2, str(tu) == str(tu2))
@@ -89,9 +96,13 @@ class TimeUnitTest(unittest.TestCase):
 
     def test_kinds(self):
         seen = set()
-        for kind in TIME_UNITS:
+        for i, kind in enumerate(TIME_UNITS, 1):
+            self.assertEqual(kind, kind)
             self.assertNotIn(kind, seen)
             seen.add(kind)
+            for kind2 in TIME_UNITS[i:]:
+                self.assertLess(kind, kind2)
+
 
 if __name__ == '__main__':
     unittest.main()

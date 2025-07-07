@@ -88,9 +88,6 @@ class TimeunitKindMeta(type):
             dt = dt.dt
         return cls(cls._next(cls.truncate(dt)))
 
-    def truncate(cls, dt):
-        raise NotImplementedError()
-
     def to_str(cls, dt):
         return dt.strftime(cls.formatter)
 
@@ -170,7 +167,7 @@ class Day(TimeunitKind):
 class Timeunit:
     def __init__(self, kind, dt):
         if isinstance(kind, int):
-            kind = TimeunitKindMeta._registered[kind]
+            kind = TimeunitKind.unit_register[kind]
         self.kind = kind
         self.dt = kind.truncate(dt)
 
