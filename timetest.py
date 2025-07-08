@@ -34,6 +34,7 @@ class TimeUnitTest(unittest.TestCase):
               with self.subTest(kind=kind, dt=dt):
                 tu = kind(dt)
                 self.assertEqual(d[tu], tu in cur_set)
+                self.assertEqual(d[tu], int(tu) in cur_set)
                 d[tu] = True
                 cur_set.add(int(tu))
                 cur_name.add(str(tu))

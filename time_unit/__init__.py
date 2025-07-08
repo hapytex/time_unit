@@ -59,6 +59,11 @@ class TimeunitKindMeta(type):
     def __hash__(self):
         return hash(int(self))
 
+    def __eq__(self, other):
+        if isinstance(other, int):
+            other = TimeunitKind.unit_register[other]
+        return self is other
+
     def __call__(cls, dt):
         if isinstance(dt, Timeunit):
             dt = dt.dt
@@ -220,6 +225,8 @@ class Timeunit:
         return int(self)
 
     def __eq__(self, other):
+        if isinstance(other, int):
+            other = TimeunitKind.from_int(other)
         return self.kind == other.kind and self.dt == other.dt
 
     def __lt__(self, other):
