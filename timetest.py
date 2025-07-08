@@ -24,6 +24,7 @@ class TimeUnitTest(unittest.TestCase):
         prev_name = set()
         cur_set = set()
         cur_name = set()
+        d = [0] * 202101019
         for kind in TIME_UNITS:
             prev_name.update(cur_name)
             prev_set.update(cur_set)
@@ -32,6 +33,8 @@ class TimeUnitTest(unittest.TestCase):
             for dt in self.date_range_yield():
               with self.subTest(kind=kind, dt=dt):
                 tu = kind(dt)
+                self.assertEqual(d[tu], int(tu in cur_set or tu in prev_set))
+                d[tu] = 1
                 cur_set.add(int(tu))
                 cur_name.add(str(tu))
                 self.assertNotIn(int(tu), prev_set)

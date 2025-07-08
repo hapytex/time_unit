@@ -81,7 +81,7 @@ class TimeunitKindMeta(type):
         return cls._next(dt) - timedelta(days=1)
 
     def _next(cls, dt):
-        return cls._last_day(dt) + timedelta(days=1)
+        return cls.last_day(dt) + timedelta(days=1)
 
     def get_next(cls, dt):
         if isinstance(dt, Timeunit):
