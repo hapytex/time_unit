@@ -1,5 +1,5 @@
 import unittest
-from datetime import date, timedelta
+from datetime import date, datetime, time, timedelta
 
 from time_unit import Year, Quarter, Month, Week, Day, TimeunitKind, Timeunit
 
@@ -33,6 +33,7 @@ class TimeUnitTest(unittest.TestCase):
             for dt in self.date_range_yield():
               with self.subTest(kind=kind, dt=dt):
                 tu = kind(dt)
+                self.assertEqual(tu, kind(datetime.combine(dt, time(14, 25))))
                 self.assertEqual(d[tu], tu in cur_set)
                 self.assertEqual(d[tu], int(tu) in cur_set)
                 d[tu] = True
@@ -78,6 +79,8 @@ class TimeUnitTest(unittest.TestCase):
                 self.assertNotIn(dt, tu.next)
                 self.assertNotIn(dt, tu.previous)
                 self.assertNotIn(tu, tu.next)
+                self.assertEqual(tu.previous, kind.get_previous(tu))
+                self.assertEqual(tu.next, kind.get_next(tu))
                 self.assertNotIn(tu, tu.previous)
                 self.assertNotIn(tu.previous, tu)
                 self.assertNotIn(tu.next, tu)
@@ -113,6 +116,8 @@ class TimeUnitTest(unittest.TestCase):
         d = [False] * 10
         for i, kind in enumerate(TIME_UNITS, 1):
             self.assertEqual(kind, kind)
+            self.assertEqual(kind, kind.kind_int)
+            self.assertEqual(kind.kind_int, kind)
             self.assertEqual(d[kind], kind in seen)
             d[kind] = True
             self.assertNotIn(kind, seen)
