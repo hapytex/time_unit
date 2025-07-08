@@ -65,6 +65,12 @@ class TimeUnitTest(unittest.TestCase):
                 self.assertIn(dt, tu)
                 self.assertIn(dt, list(tu))
                 self.assertEqual(len(tu), len(list(tu)))
+                ance = tu.ancestors
+                self.assertEqual(tu.previous, next(ance))
+                self.assertEqual(tu.previous.previous, next(ance))
+                succ = tu.successors
+                self.assertEqual(tu.next, next(succ))
+                self.assertEqual(tu.next.next, next(succ))
                 self.assertEqual(tu, tu)
                 self.assertLessEqual(tu, tu)
                 self.assertGreaterEqual(tu, tu)

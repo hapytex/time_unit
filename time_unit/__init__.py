@@ -194,17 +194,17 @@ class Timeunit:
 
     @property
     def ancestors(self):
-        result = self.previous
+        result = self
         while True:
-            yield result
             result = result.previous
+            yield result
 
     @property
     def successors(self):
-        result = self.next
+        result = self
         while True:
-            yield result
             result = result.next
+            yield result
 
     def __len__(self):
         return (self.next.dt - self.dt).days
