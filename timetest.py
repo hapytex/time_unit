@@ -107,7 +107,7 @@ class TimeUnitTest(unittest.TestCase):
         d = [False] * 10
         for i, kind in enumerate(TIME_UNITS, 1):
             self.assertEqual(kind, kind)
-            self.assertEqual(d[kind], d in seen)
+            self.assertEqual(d[kind], kind in seen)
             d[kind] = True
             self.assertNotIn(kind, seen)
             seen.add(kind)
