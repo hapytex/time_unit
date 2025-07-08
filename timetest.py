@@ -30,6 +30,7 @@ class TimeUnitTest(unittest.TestCase):
             cur_set = set()
             cur_name = set()
             for dt in self.date_range_yield():
+              with self.subTest(kind=kind, dt=dt):
                 tu = kind(dt)
                 cur_set.add(int(tu))
                 cur_name.add(str(tu))
@@ -84,6 +85,7 @@ class TimeUnitTest(unittest.TestCase):
         for i, superkind in enumerate(TIME_UNITS, 1):
             for kind in TIME_UNITS[i:]:
                 for dt in self.date_range_yield():
+                  with self.subTest(superkind=superkind, kind=kind, dt=dt):
                     stu = superkind(dt)
                     tu = kind(dt)
                     self.assertLess(len(tu), len(stu))
