@@ -24,7 +24,7 @@ class TimeUnitTest(unittest.TestCase):
         prev_name = set()
         cur_set = set()
         cur_name = set()
-        d = [0] * 202101019
+        d = [False] * 202101019
         for kind in TIME_UNITS:
             prev_name.update(cur_name)
             prev_set.update(cur_set)
@@ -33,8 +33,8 @@ class TimeUnitTest(unittest.TestCase):
             for dt in self.date_range_yield():
               with self.subTest(kind=kind, dt=dt):
                 tu = kind(dt)
-                self.assertEqual(d[tu], int(tu in cur_set or tu in prev_set))
-                d[tu] = 1
+                self.assertEqual(d[tu], tu in cur_set)
+                d[tu] = True
                 cur_set.add(int(tu))
                 cur_name.add(str(tu))
                 self.assertNotIn(int(tu), prev_set)
@@ -103,8 +103,11 @@ class TimeUnitTest(unittest.TestCase):
 
     def test_kinds(self):
         seen = set()
+        d = [False] * 10
         for i, kind in enumerate(TIME_UNITS, 1):
             self.assertEqual(kind, kind)
+            self.assertEqual(d[kind], d in seen)
+            d[kind] = True
             self.assertNotIn(kind, seen)
             seen.add(kind)
             for kind2 in TIME_UNITS[i:]:
