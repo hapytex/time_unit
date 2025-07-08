@@ -12,4 +12,6 @@ jobs:
       with:
         python-version: '3.x'
     - name: Run test
-      run: python timetest.py
+      run: pip install pytest-cov
+    - name: Run test
+      run: pytest --cov=time_unit timetest.py
