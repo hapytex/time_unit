@@ -67,7 +67,7 @@ class TimeUnitTest(unittest.TestCase):
                 self.assertIn((dt, dt), tu)
                 self.assertIn((tu.first_date, tu.last_date), tu)
                 with self.assertRaises(TypeError):
-                    self.seertIn(1425, tu)
+                    self.assertIn(1425, tu)
                 self.assertIn(dt, list(tu))
                 self.assertEqual(len(tu), len(list(tu)))
                 ance = tu.ancestors
