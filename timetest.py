@@ -64,6 +64,10 @@ class TimeUnitTest(unittest.TestCase):
                 self.assertLessEqual(tu.dt, tu.last_date)
                 self.assertEqual(TimeunitKind.from_int(int(tu)), tu)
                 self.assertIn(dt, tu)
+                self.assertIn((dt, dt), tu)
+                self.assertIn((tu.first_date, tu.last_date), tu)
+                with self.assertRaises(TypeError):
+                    self.seertIn(1425, tu)
                 self.assertIn(dt, list(tu))
                 self.assertEqual(len(tu), len(list(tu)))
                 ance = tu.ancestors

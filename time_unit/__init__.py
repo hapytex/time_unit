@@ -256,6 +256,10 @@ class Timeunit:
             return item, item
         elif isinstance(item, Timeunit):
             return item.date_range
+        # try to make a range
+        dt0, dt1 = item
+        if isinstance(dt0, date) and isinstance(dt1, date):
+            return item
         raise TypeError('Item {item!r} has no date range.')
 
     def overlaps_with(self, item):
