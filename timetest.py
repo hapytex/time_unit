@@ -17,7 +17,7 @@ class TimeUnitTest(unittest.TestCase):
     def date_range_yield(self):
         dd = (END_DATE - START_DATE).days
         for i in range(dd):
-            yield START_DATE + timedelta(days=1)
+            yield START_DATE + timedelta(days=i)
 
     def test_to_int(self):
         prev_set = set()
