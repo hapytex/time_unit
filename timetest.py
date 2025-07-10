@@ -3,7 +3,22 @@ from datetime import date, datetime, time, timedelta
 
 from time_unit import Year, Quarter, Month, Week, Day, TimeunitKind, Timeunit
 
+
+class Decade(TimeunitKind):
+    kind_int = 0
+    formatter = "%Ys"
+
+    @classmethod
+    def truncate(cls, dt):
+        return date(10 * (dt.year//10), 1, 1)
+
+    @classmethod
+    def last_day(cls, dt):
+        return date(dt.year + 10, 1, 1) - timedelta(days=1)
+
+
 TIME_UNITS = [
+    Decade,
     Year,
     Quarter,
     Month,
