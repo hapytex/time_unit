@@ -10,11 +10,11 @@ class Decade(TimeunitKind):
 
     @classmethod
     def truncate(cls, dt):
-        dt = cls.truncate(dt)
         return date(10 * (dt.year // 10), 1, 1)
 
     @classmethod
     def last_day(cls, dt):
+        dt = cls.truncate(dt)
         return date(dt.year + 10, 1, 1) - timedelta(days=1)
 
 

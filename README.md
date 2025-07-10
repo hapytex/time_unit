@@ -26,7 +26,11 @@ If we thus order the time units, we first sort on the start of the time unit, an
 
 ## Utility functions
 
-The package provides some utility functions. For example when we construct a year with
+The package provides some utility functions to make working with the time units more covenient.
+
+### Moving forward and backwardd
+
+For example when we construct a year with
 
 ```python3
 year1958 = Year(date(1958, 3, 25))
@@ -38,6 +42,10 @@ we can go to the next and previous year with:
 year1959 = year1958.next
 year1957 = year1958.previous
 ```
+
+one can also use `.ancestors` and `.succesors` which is a generator that will keep proposing 
+
+### Membership checks
 
 We can also determine if a date, or another time range is fully enclosed by another one, for example:
 
