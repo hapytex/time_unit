@@ -104,6 +104,7 @@ class TimeunitKind(metaclass=TimeunitKindMeta):
     kind_int = None
     formatter = None
 
+
 class Year(TimeunitKind):
     kind_int = 1
     formatter = "%Y"
