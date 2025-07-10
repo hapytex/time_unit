@@ -57,9 +57,31 @@ class TimeunitKindMeta(type):
         return int(self)
 
     def __hash__(self):
+        """
+        Return the hash value of the time unit, based on its integer encoding.
+        """
         return hash(int(self))
 
+    def __eq__(self, other):
+        """
+        Return True if this time unit kind is the same as another kind or matches the kind registered for the given integer.
+        
+        Parameters:
+            other: Another kind instance or an integer representing a registered kind.
+        
+        Returns:
+            bool: True if both refer to the same time unit kind, otherwise False.
+        """
+        if isinstance(other, int):
+            other = TimeunitKind.unit_register[other]
+        return self is other
+
     def __call__(cls, dt):
+        """
+        Creates a `Timeunit` instance of this kind from a given date or `Timeunit`.
+        
+        If a `Timeunit` is provided, its date is extracted and used.
+        """
         if isinstance(dt, Timeunit):
             dt = dt.dt
         return Timeunit(cls, dt)
@@ -78,12 +100,35 @@ class TimeunitKindMeta(type):
         return cls(dt)
 
     def last_day(cls, dt):
+        """
+        Return the last date of the time unit containing the given date.
+        
+        Parameters:
+        	dt (date): The date for which to find the last day of its time unit.
+        
+        Returns:
+        	date: The last date within the same time unit as `dt`.
+        """
         return cls._next(dt) - timedelta(days=1)
 
     def _next(cls, dt):
-        return cls._last_day(dt) + timedelta(days=1)
+        """
+        Return the first day of the next time unit following the given date.
+        
+        Parameters:
+        	dt (date): The reference date.
+        
+        Returns:
+        	date: The first day of the next time unit.
+        """
+        return cls.last_day(dt) + timedelta(days=1)
 
     def get_next(cls, dt):
+        """
+        Return the next time unit instance of this kind after the given date.
+        
+        If a `Timeunit` is provided, its date is used. The returned instance represents the time unit immediately following the one containing `dt`.
+        """
         if isinstance(dt, Timeunit):
             dt = dt.dt
         return cls(cls._next(cls.truncate(dt)))
@@ -98,6 +143,7 @@ class TimeunitKindMeta(type):
 class TimeunitKind(metaclass=TimeunitKindMeta):
     kind_int = None
     formatter = None
+
 
 class Year(TimeunitKind):
     kind_int = 1
@@ -189,19 +235,32 @@ class Timeunit:
 
     @property
     def ancestors(self):
-        result = self.previous
+        """
+        Yields an infinite sequence of preceding time units, starting from the previous unit of this instance.
+        
+        Each iteration yields the next earlier time unit of the same kind.
+        """
+        result = self
         while True:
-            yield result
             result = result.previous
+            yield result
 
     @property
     def successors(self):
-        result = self.next
+        """
+        Yields successive time units following the current one indefinitely.
+        
+        Each yielded value is the next chronological time unit of the same kind.
+        """
+        result = self
         while True:
-            yield result
             result = result.next
+            yield result
 
     def __len__(self):
+        """
+        Return the number of days in the time unit.
+        """
         return (self.next.dt - self.dt).days
 
     def __iter__(self):
@@ -217,12 +276,25 @@ class Timeunit:
         return self.kind.get_next(self.dt)
 
     def __index__(self):
+        """
+        Return the integer representation of the time unit kind for use in index operations.
+        """
         return int(self)
 
     def __eq__(self, other):
+        """
+        Return True if this Timeunit is equal to another Timeunit or an integer representation.
+        
+        Equality is determined by matching both the kind and the truncated date. If `other` is an integer, it is first converted to a Timeunit instance.
+        """
+        if isinstance(other, int):
+            other = TimeunitKind.from_int(other)
         return self.kind == other.kind and self.dt == other.dt
 
     def __lt__(self, other):
+        """
+        Return True if this time unit is less than another, based on their integer representations.
+        """
         return int(self) < int(other)
 
     def __gt__(self, other):
@@ -245,13 +317,45 @@ class Timeunit:
 
     @classmethod
     def _get_range(cls, item):
+        """
+        Extracts a date range tuple from the given item.
+        
+        If the item is a `date`, returns a tuple with the date as both start and end.
+        If the item is a `Timeunit`, returns its date range.
+        If the item is a tuple of two `date` objects, returns the tuple.
+        Raises a `TypeError` if the item cannot be interpreted as a date range.
+        
+        Parameters:
+            item: A `date`, `Timeunit`, or a tuple of two `date` objects.
+        
+        Returns:
+            A tuple of two `date` objects representing the start and end of the range.
+        
+        Raises:
+            TypeError: If the item cannot be interpreted as a date range.
+        """
         if isinstance(item, date):
             return item, item
         elif isinstance(item, Timeunit):
             return item.date_range
-        raise TypeError('Item {item!r} has no date range.')
+        # try to make a range
+        try:
+            dt0, dt1 = item
+            if isinstance(dt0, date) and isinstance(dt1, date):
+                return item
+        except TypeError:
+            raise TypeError(f'Item {item!r} has no date range.') from None
 
     def overlaps_with(self, item):
+        """
+        Check if the time unit overlaps with a given date, date range, or another time unit.
+        
+        Parameters:
+            item: A date, Timeunit, or a tuple of two dates representing a date range.
+        
+        Returns:
+            bool: True if there is any overlap between this time unit and the specified range or unit; otherwise, False.
+        """
         frm0, to0 = self._get_range(item)
         frm, to = self.date_range
         return to >= frm0 and to0 >= frm
