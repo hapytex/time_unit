@@ -46,7 +46,7 @@ year1957 = year1958.previous
 one can also use `.ancestors` and `.successors` which are generators that will keep proposing previous and next time units respectively, so we can walk over the years since 1958 with:
 
 ```python3
-for year in year1958.succesors:
+for year in year1958.successors:
   print(year)
 ```
 
@@ -79,9 +79,9 @@ Week(date(1957, 12, 31)) <= Week(date(1958, 3, 25))
 
 A time unit itself is iterable: it will yield all dates contained by the time unit. For example we can get all dates of `1958Q1` with:
 
-```aiignore
+```python3
 for dt in Quarter(date(1958, 3, 25)):
-  print(dt)  # 1958-1-1 to 1948-3-31
+  print(dt)  # 1958-01-01 to 1958-03-31
 ```
 
 we can also convert such collection to a list.
@@ -141,11 +141,11 @@ With these functions, we have registered a new time unit.
 
 The package ships with the following time units:
 
- - **1**: year;
- - **3**: quarter;
- - **5**: month;
- - **7**: week; and
- - **9**: day.
+- **1**: year;
+- **3**: quarter;
+- **5**: month;
+- **7**: week; and
+- **9**: day.
 
 There is deliberately always one integer between the two time units, such that one can always put a customized one between any of the two.
 
