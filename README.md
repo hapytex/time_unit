@@ -43,7 +43,12 @@ year1959 = year1958.next
 year1957 = year1958.previous
 ```
 
-one can also use `.ancestors` and `.succesors` which is a generator that will keep proposing 
+one can also use `.ancestors` and `.succesors` which is a generator that will keep proposing `.previous` and `.next` time units, so we can walk over the years since 1958 with:
+
+```python3
+for year in year1958.succesors:
+  print(year)
+```
 
 ### Membership checks
 
@@ -54,7 +59,45 @@ Month(date(1958, 3, 25)) in Year(date(1958, 3, 25))  # True
 Month(date(2019, 11, 25)) in Year(date(1958, 3, 25))  # False
 ```
 
-or check if there is overlap between two time units, especially since weeks are not always fully enclosed by the month, quarter, etc. when the week starts or ends.
+or check if there is overlap between two time units, especially since weeks are not always fully enclosed by the month, quarter, etc. when the week starts or ends. For example:
+
+```python3
+Week(date(1957, 12, 31)).overlaps_with(Year(date(1958, 1, 1)))  # True
+```
+
+since the week with 1957-12-31 starts on December 30th.
+
+### Ordering
+
+We can also check if one time unit starts before another time unit if these are of the same kind, like:
+
+```python3
+Week(date(1957, 12, 31)) <= Week(date(1958, 3, 25))
+```
+
+### Time units as a collection of dates
+
+A time unit itself is iterable: it will yield all dates contained by the time unit. For example we can get all dates of `1958Q1` with:
+
+```aiignore
+for dt in Quarter(date(1958, 3, 25)):
+  print(dt)  # 1958-1-1 to 1948-3-31
+```
+
+we can also convert such collection to a list.
+
+### Hash and index
+
+A time unit is hashable, it uses the `int` representation as hash. It is also indexable, and also uses the `int` presentation.
+
+We can thus make a (very) long list, and work with:
+
+```python3
+specials_time_units = [False] * 202512319
+specials_time_units[Day(date(1958, 3, 25))] = True
+```
+
+we can even use this to slice, although it probably is not very useful.
 
 ## Registering a new time unit
 
@@ -90,7 +133,7 @@ class Decade(TimeunitKind):
 
 this might be useful if the formatting is more advanced than what Python's date formatter can handle.
 
-Furthermore one implements the `.truncate(..)` class method to convert a date to the start of the date range, and the `_next(..)` which returns the first date for the next decade.
+Furthermore, one implements the `.truncate(..)` class method to convert a date to the start of the date range, and the `_next(..)` which returns the first date for the next decade.
 
 With these functions, we have registered a new time unit.
 
@@ -103,3 +146,5 @@ The package ships with the following time units:
  - **5**: month;
  - **7**: week; and
  - **9**: day.
+
+There is deliberately always one int between the two time units, such that one can always put a customized one between any of the two.
