@@ -26,9 +26,9 @@ If we thus order the time units, we first sort on the start of the time unit, an
 
 ## Utility functions
 
-The package provides some utility functions to make working with the time units more covenient.
+The package provides some utility functions to make working with the time units more convenient.
 
-### Moving forward and backwardd
+### Moving forward and backward
 
 For example when we construct a year with
 
@@ -43,7 +43,7 @@ year1959 = year1958.next
 year1957 = year1958.previous
 ```
 
-one can also use `.ancestors` and `.succesors` which is a generator that will keep proposing `.previous` and `.next` time units, so we can walk over the years since 1958 with:
+one can also use `.ancestors` and `.successors` which are generators that will keep proposing previous and next time units respectively, so we can walk over the years since 1958 with:
 
 ```python3
 for year in year1958.succesors:
@@ -88,7 +88,7 @@ we can also convert such collection to a list.
 
 ### Hash and index
 
-A time unit is hashable, it uses the `int` representation as hash. It is also indexable, and also uses the `int` presentation.
+A time unit is hashable, it uses the `int` representation as hash. It is also indexable, and uses the `int` representation.
 
 We can thus make a (very) long list, and work with:
 
@@ -147,4 +147,6 @@ The package ships with the following time units:
  - **7**: week; and
  - **9**: day.
 
-There is deliberately always one int between the two time units, such that one can always put a customized one between any of the two.
+There is deliberately always one integer between the two time units, such that one can always put a customized one between any of the two.
+
+`195803259 – 201911259`
