@@ -10,10 +10,28 @@ class Decade(TimeunitKind):
 
     @classmethod
     def truncate(cls, dt):
+        """
+        Return the first day of the decade containing the given date.
+        
+        Parameters:
+        	dt (date or datetime): The date to truncate to the start of its decade.
+        
+        Returns:
+        	date: The first day (January 1) of the decade in which `dt` falls.
+        """
         return date(10 * (dt.year // 10), 1, 1)
 
     @classmethod
     def last_day(cls, dt):
+        """
+        Return the last day of the decade containing the given date.
+        
+        Parameters:
+        	dt (date or datetime): The date for which to determine the last day of its decade.
+        
+        Returns:
+        	date: The last day of the decade as a date object.
+        """
         dt = cls.truncate(dt)
         return date(dt.year + 10, 1, 1) - timedelta(days=1)
 
@@ -25,11 +43,27 @@ END_DATE = date(2019, 11, 25)
 
 class TimeUnitTest(unittest.TestCase):
     def date_range_yield(self):
+        """
+        Yields each date from the start date up to, but not including, the end date.
+        
+        Yields:
+            datetime.date: The next date in the range from START_DATE to END_DATE.
+        """
         dd = (END_DATE - START_DATE).days
         for i in range(dd):
             yield START_DATE + timedelta(days=i)
 
     def test_to_int(self):
+        """
+        Comprehensively tests the integrity, uniqueness, ordering, and temporal relationships of all time unit kinds across a historical date range.
+        
+        This test validates that each time unit instance:
+        - Is uniquely and consistently represented by its integer and string forms.
+        - Correctly implements equality, ordering, and membership semantics.
+        - Properly defines its temporal boundaries, adjacency, and overlap behavior.
+        - Supports correct iteration, ancestor/successor traversal, and inclusion checks for dates and ranges.
+        - Raises appropriate errors for invalid membership checks.
+        """
         prev_set = set()
         prev_name = set()
         cur_set = set()
@@ -113,6 +147,15 @@ class TimeUnitTest(unittest.TestCase):
                     )
 
     def test_hierarchy(self):
+        """
+        Test hierarchical relationships between time unit kinds for correct ordering, duration, and overlap.
+        
+        Verifies that for each pair of coarser (superkind) and finer (kind) time units:
+        - The finer unit is shorter in duration than the coarser unit.
+        - Integer representations of adjacent units are ordered correctly.
+        - Units of different kinds are not equal by value, string, or representation.
+        - Units of different kinds overlap temporally as expected.
+        """
         for i, superkind in enumerate(TIME_UNITS, 1):
             for kind in TIME_UNITS[i:]:
                 for dt in self.date_range_yield():
@@ -130,6 +173,11 @@ class TimeUnitTest(unittest.TestCase):
                         self.assertTrue(tu.overlaps_with(stu))
 
     def test_kinds(self):
+        """
+        Test the identity, equality, and ordering properties of time unit kinds.
+        
+        Verifies that each time unit kind is equal to itself and its integer identifier, tracks membership in a set and a boolean list, and checks that kinds are ordered by increasing granularity.
+        """
         seen = set()
         d = [False] * 10
         for i, kind in enumerate(TIME_UNITS, 1):
