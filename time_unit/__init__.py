@@ -344,7 +344,7 @@ class Timeunit:
             if isinstance(dt0, date) and isinstance(dt1, date):
                 return item
         except TypeError:
-            raise TypeError(f'Item {item!r} has no date range.') from None
+            raise TypeError(f"Item {item!r} has no date range.") from None
 
     def overlaps_with(self, item):
         """

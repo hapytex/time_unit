@@ -6,7 +6,7 @@ from time_unit import Year, Quarter, Month, Week, Day, TimeunitKind, Timeunit
 
 class Decade(TimeunitKind):
     kind_int = 0
-    formatter = '%Ys'
+    formatter = "%Ys"
 
     @classmethod
     def truncate(cls, dt):
@@ -192,5 +192,5 @@ class TimeUnitTest(unittest.TestCase):
                 self.assertLess(kind, kind2)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
