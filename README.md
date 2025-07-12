@@ -1,5 +1,8 @@
 # `time_unit`
 
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/time_unit)](https://pypi.org/project/time_unit/)
+
+
 `time_unit` is a small package to represents time ranges through an `int`, this means we can easily store these, for
 example in a database. It also offers functions to determine the previous and next time range.
 
