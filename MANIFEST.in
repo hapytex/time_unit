@@ -1,0 +1,4 @@
+# MANIFEST.in
+include LICENSE
+include README.md
+recursive-include time_unit *.py
