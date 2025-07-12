@@ -14,5 +14,9 @@ dist/
 *.python-version
 .coverage
 
-djutils/
-manage.py
+time_unit/_version.py
+
+# misc editor / OS artefacts
+__pycache__/
+.DS_Store
+.vscode/

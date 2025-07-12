@@ -19,9 +19,8 @@ jobs:
       with:
         python-version: '3.x'
     - name: Run test
-      run: pip install pytest-cov
-    - name: Run test
       run: |
+        pip install pytest-cov
         pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=time_unit timetest.py | tee pytest-coverage.txt
     - name: Pytest coverage comment
       uses: MishaKav/pytest-coverage-comment@main
@@ -35,9 +34,9 @@ jobs:
         python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
     steps:
     - name: checkout code
-      uses: actions/checkout@v2.3.1
+      uses: actions/checkout@v4
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
     - run: |
@@ -50,9 +49,9 @@ jobs:
     needs: [black, build, test]
     steps:
     - name: checkout code
-      uses: actions/checkout@v2.3.1
+      uses: actions/checkout@v4
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
     - run: |
         pip install 'setuptools>=38.6.0,<69.0' twine>=1.11.0 wheel>=0.31.0 setuptools_scm>=6.2
         python -m setuptools_scm
