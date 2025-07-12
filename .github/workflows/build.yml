@@ -1,5 +1,8 @@
 name: CI/CD
 on: push
+permissions:
+  contents: read
+  id-token: write
 
 jobs:
   black:
