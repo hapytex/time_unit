@@ -1,5 +1,8 @@
 name: CI/CD
 on: push
+permissions:
+  contents: read
+  id-token: write
 
 jobs:
   black:
@@ -60,5 +63,3 @@ jobs:
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         verbose: true
-      permissions:
-        id-token: write
