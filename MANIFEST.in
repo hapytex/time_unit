@@ -1,4 +1,4 @@
 # MANIFEST.in
 include LICENSE
 include README.md
-recursive-include time_unit *.py
+recursive-include unit_of_time *.py

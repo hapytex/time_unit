@@ -24,7 +24,7 @@ jobs:
     - name: Run test
       run: |
         pip install pytest-cov
-        pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=time_unit timetest.py | tee pytest-coverage.txt
+        pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=unit_of_time timetest.py | tee pytest-coverage.txt
   build:
     runs-on: ubuntu-latest
     strategy:

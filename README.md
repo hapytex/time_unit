@@ -1,9 +1,9 @@
-# `time_unit`
+# `unit_of_time`
 
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/time_unit)](https://pypi.org/project/time_unit/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/unit_of_time)](https://pypi.org/project/unit_of_time/)
 
 
-`time_unit` is a small package to represents time ranges through an `int`, this means we can easily store these, for
+`unit_of_time` is a small package to represents time ranges through an `int`, this means we can easily store these, for
 example in a database. It also offers functions to determine the previous and next time range.
 
 ## Time units
@@ -96,8 +96,8 @@ A time unit is hashable, it uses the `int` representation as hash. It is also in
 We can thus make a (very) long list, and work with:
 
 ```python3
-specials_time_units = [False] * 202512319
-specials_time_units[Day(date(1958, 3, 25))] = True
+specials_unit_of_times = [False] * 202512319
+specials_unit_of_times[Day(date(1958, 3, 25))] = True
 ```
 
 we can even use this to slice, although it probably is not very useful.

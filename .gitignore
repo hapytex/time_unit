@@ -14,7 +14,7 @@ dist/
 *.python-version
 .coverage
 
-time_unit/_version.py
+unit_of_time/_version.py
 
 # misc editor / OS artefacts
 __pycache__/
