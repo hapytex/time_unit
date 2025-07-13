@@ -37,7 +37,7 @@ class Decade(TimeunitKind):
 
 
 TIME_UNITS = [Decade, Year, Quarter, Month, Week, Day]
-START_DATE = date(1302, 7, 11)
+START_DATE = date(1802, 7, 11)
 END_DATE = date(2019, 11, 25)
 
 
