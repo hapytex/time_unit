@@ -25,11 +25,6 @@ jobs:
       run: |
         pip install pytest-cov
         pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=time_unit timetest.py | tee pytest-coverage.txt
-    - name: Pytest coverage comment
-      uses: MishaKav/pytest-coverage-comment@main
-      with:
-        pytest-coverage-path: ./pytest-coverage.txt
-        junitxml-path: ./pytest.xml
   build:
     runs-on: ubuntu-latest
     strategy:
